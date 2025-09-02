@@ -64,8 +64,8 @@ def main():
     # --- User Input Area ---
     user_input = st.text_area(
         "在此輸入您的訊息...",
-        value="create a new quotation for a new customer",
-        height=50,
+        value="new quotation\n長聯建築工程有限公司\nA3連接橋D匝道箱樑木模板支撐架計算\n7000MOP\nABC工程有限公司\nA4木模板支撐架計算\n3000MOP",
+        height=200,
         help="輸入您的請求並點擊提交按鈕"
     )
     submit_button = st.button("提交", key="submit-btn", help="發送訊息給AI代理", use_container_width=True)
@@ -74,17 +74,7 @@ def main():
     if submit_button and user_input.strip() != "":
         handle_chat_submit(user_input)
         st.rerun()  # Refresh to show updated chat history
-    
-    # --- Render Quote Form Component (controlled by AI agent) ---
-    if st.session_state.show_quote_form:
-        st.divider()
-        st.subheader("📄 報價單表單")
-        st.write("I'll help you create a quotation. Please fill out the form below with the required details.")
-        from ui.component.quote_form import render_quote_form
-        render_quote_form()
-    else:
-        st.info("💬 與AI代理聊天以完成任務")
-        
+
 if __name__ == "__main__":
     main()
 

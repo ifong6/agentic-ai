@@ -9,7 +9,7 @@ def human_feedback_handling_agent_node(state: agentState):
     if quotation_json:
         return Command(
             update={"quotation_json": quotation_json},
-            goto="quote_pdf_processing_agent"
+            goto="quote_pdf_agent"
         )
     else:
         return Command(

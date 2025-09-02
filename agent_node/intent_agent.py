@@ -8,7 +8,7 @@ intent_prompt_template = """
     You are an AI assistant that analyzes user's input and identifies their underlying request intent(s).
   
     Your task:
-    Step 1: Read the following email:
+    Step 1: Read the following user input:
         ```text
         {user_input}
 
@@ -21,7 +21,7 @@ intent_prompt_template = """
             - issue_invoice
 
         **IMPORTANT NOTES:**
-            - Customers may not use these exact words.
+            - Customers may NOT use these exact words.
             - Their emails may be long, conversational, or unclear.
             - You must infer their true intent(s) from context, even if not explicitly stated.
 
@@ -34,12 +34,12 @@ intent_prompt_template = """
         - **messages**: Explicitly asks to generate a quotation; no mention of invoice.  
         
         **Example 2:**  
-        - **Input**: "Send ACME an invoice for order #123."  
+        - **Input**: "Send ACME an INV for order #123."  
         - **Intents**: ["create_invoice"]  
         - **messages**: Direct request to send an invoice for a specific order.  
         
         **Example 3:**  
-        - **Input**: "First prepare a quote, then invoice after approval."  
+        - **Input**: "First prepare a QUO, then INV after approval."  
         - **Intents**: ["create_quotation", "create_invoice"]  
         - **messages**: User asks for both steps — first a quotation, then an invoice.  
         
@@ -62,7 +62,6 @@ intent_prompt_template = """
         }}
 """
 
-
 class IntentClassifierOutput(BaseModel):
     intents: list[Literal['create_quotation', 'issue_invoice']]
     messages: str # any reasoning
@@ -75,7 +74,7 @@ def intent_agent_node(state: agentState):
 
     try:
         intents = parsed_response.get("intents", []) or ["unknown"]
-        llm_result_msg = parsed_response.get("messages", [])[-1].get("content", "")
+        llm_result_msg = parsed_response.get("messages", [])[-1]
 
     except Exception as e:
         return {

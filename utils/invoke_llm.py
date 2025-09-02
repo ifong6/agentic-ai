@@ -4,9 +4,10 @@ from typing import Any
 import dotenv
 from gradio_client import Client
 from google import genai
-from google.genai import types
+
 
 dotenv.load_dotenv()
+api_key = os.getenv('GOOGLE_API_KEY')
 
 def invoke_llm(prompt: str, config: Any = None, model: str = None):
     print("[INVOKE][LLM]")
@@ -17,7 +18,7 @@ def invoke_llm(prompt: str, config: Any = None, model: str = None):
     if config is None:
         config = {}
 
-    client = genai.Client(api_key="AIzaSyAgW1McgOTGBg4hVOoP8OO1EE3Qk81Dy6o")
+    client = genai.Client(api_key=api_key)
     response = client.models.generate_content(
         model=model,
         contents=prompt,

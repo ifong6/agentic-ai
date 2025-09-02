@@ -45,7 +45,7 @@ def call_agent(user_request: UserRequest):
         }
         
     except Exception as e:
-        print("[ERROR][end_point][call_agent]", {str(e)})
+        print(f"[ERROR][end_point][call_agent]: {str(e)}")
         return {
             "status": "fail",
             "result": str(e)
