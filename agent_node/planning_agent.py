@@ -1,57 +1,13 @@
 from langchain_core.messages import AIMessage
-from pydantic import BaseModel
-
+from agent_node.prompts.routing_prompt_template import PlanningResultOutput
 from agent_config.AgentState import agentState
 from utils.invoke_llm import invoke_llm
-
-routing_prompt_template = """
-    You are a planning agent responsible for determining the next best agent(s) to handle the task, 
-    based on the user's intents and feedback from a human reviewer.
-
-    ---
-
-    Detected Intents:
-        {intents}
-
-    Info Items:
-        {info_items}
-    ---
-
-    ## Agent Capabilities:
-        - `"quote_pdf_agent"`: Handles creating one more multiple quotations.
-        - `"invoice_pdf_agent"`: issues one more multiple invoices.
-        - `"final_response_agent"`: confirm with user before closes the conversation.
-
-    ---
-
-    ## Instructions:
-        1. Prioritize create quotation before issuing invoice, if both are needed.
-        2. If **no specific intent applies** route to `"final_response_agent"`.
-
-    ---
-
-    ## Output Format:
-        Output ONLY valid JSON. Do not include explanations or formatting. The JSON must strictly follow this schema:
-        ```json
-            {{
-                "next_agents": ["<a list of next agents to invoke with sorted priorities per your analysis>"],
-                "messages": "<Explaining your reasoning and thought process of your planning result>"
-            }}
- 
-"""
-
-class PlanningResultOutput(BaseModel):
-    feedback_outcome: str
-    next_agents: list[str]
-    messages: str
-
+from agent_node.prompts.routing_prompt_template import routing_prompt_template
+from agent_node.prompts.routing_prompt_template import build_routing_prompt
 def planning_agent_node(state: agentState):
     print("- [INVOKE] [planning_agent_node]")
-
-    system_prompt = routing_prompt_template.format(
-        intents=state.intents,
-        info_items=state.info_items
-    )
+    
+    system_prompt = build_routing_prompt.format(intents=state.intents)
     parsed_response = invoke_llm(system_prompt, PlanningResultOutput)
 
     try:

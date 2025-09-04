@@ -4,12 +4,12 @@ from langchain.schema import AIMessage
 from agent_config.AgentState import agentState
 from utils.invoke_llm import invoke_llm
 from pydantic import BaseModel
-from entity.Quote import Quote
+from entity.Quote import Quotation
 from entity.Invoice import Invoice
 
 
 class InfoExtractOutput(BaseModel):
-    quotations: List[Quote] = []
+    quotations: List[Quotation] = []
     invoices: List[Invoice] = []
     messages: List[str]
 
@@ -75,10 +75,12 @@ Output:
           "content": "A3連接橋D匝道箱樑木模板支撐架計算",
           "quantity": "1",
           "unit": "Lot",
-          "unit_price_mop": "7000MOP",
-          "subtotal_mop": "7000MOP"
+          "unit_price_mop": "7000",
+          "subtotal_mop": "7000"
         }
-      ]
+      ],
+      "total_amount_mop": "7000",
+      "currency": "MOP"
     }
   ]
 }
@@ -104,18 +106,20 @@ Output:
           "content": "樑模板計算",
           "quantity": "1",
           "unit": "Lot",
-          "unit_price_mop": "5000MOP",
-          "subtotal_mop": "5000MOP"
+          "unit_price_mop": "5000",
+          "subtotal_mop": "5000"
         },
         {
           "serial_no": "2",
           "content": "牆體模板計算",
           "quantity": "1",
           "unit": "Lot",
-          "unit_price_mop": "5000MOP",
-          "subtotal_mop": "5000MOP"
+          "unit_price_mop": "5000",
+          "subtotal_mop": "5000"
         }
-      ]
+      ], 
+      "total_amount_mop": "10000",
+      "currency": "MOP"
     }
   ]
 }

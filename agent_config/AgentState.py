@@ -7,14 +7,12 @@ from entity.Invoice import Invoice
 
 class agentState(BaseModel):
     user_input: str
-    intents: Optional[list[str]] = None
-    next_agents: Optional[list[str]] = None
+    intents: Optional[set[str]] = None
+    next_agents: Optional[list[str]] = None  #optimize using set
     
     # Lists of business objects
     quotations: List[Dict[str, Any]] = []
     invoices: List[Dict[str, Any]] = []
-    quotation_for_db: List[Any] = []
-    invoice_for_db: List[Any] = []
     pdf_path: Optional[str] = None
     
     messages: Annotated[list[AnyMessage], add_messages] = None
@@ -23,3 +21,8 @@ class agentState(BaseModel):
     current_agent_index: int = 0
     human_feedback: Optional[list[str]] = None
     interrupt_flag: bool = False
+    feedback_outcome: Optional[str] = None    # New fields for dynamic query approach
+    
+    extracted_info: Optional[Dict[str, Any]] = None
+    query_result: Optional[Any] = None
+    current_operation: Optional[str] = None

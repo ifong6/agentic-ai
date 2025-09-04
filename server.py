@@ -1,10 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 import uvicorn
 from agentic_flow import run_agent, resume_agent
-from utils.InterrutpException import InterruptException
-from utils.UserRequest import UserRequest
+from utils.Exception.InterrutpException import InterruptException
+from utils.Request.UserRequest import UserRequest
 from fastapi.staticfiles import StaticFiles
 
 # Create FastAPI app
